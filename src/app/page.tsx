@@ -1,56 +1,69 @@
-import React from 'react';
-import { Wallet, Globe, Shield, CreditCard, ArrowUpRight } from 'lucide-react';
+"use client";
+import React, { useState, useEffect } from 'react';
+import { Wallet, Globe, ArrowUpRight, Plus } from 'lucide-react';
 
-export default function Home() {
+export default function UnicornDashboard() {
+  // Real-time Mock Balances
+  const [paypalBalance, setPaypalBalance] = useState(12450.80);
+  const [wiseBalance, setWiseBalance] = useState(8320.15);
+
+  // Simulation: Make the money "move" slightly every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPaypalBalance(prev => prev + (Math.random() * 5));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <main className="min-h-screen bg-black text-white p-6 font-sans selection:bg-blue-500/30">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-12 max-w-6xl mx-auto">
-        <div>
-          <h1 className="text-blue-500 font-bold tracking-tighter text-2xl">UNICORN OS</h1>
-          <p className="text-neutral-600 text-[10px] uppercase tracking-[0.2em]">Private Terminal // Node_01</p>
-        </div>
-        <div className="bg-neutral-900/50 border border-neutral-800 px-4 py-2 rounded-full text-xs text-neutral-400 flex items-center gap-2">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          SYSTEM ACTIVE: <span className="text-blue-400 font-mono">cmwrxh</span>
-        </div>
-      </div>
+    <div className="min-h-screen bg-black text-white p-8 font-sans">
+      <header className="flex justify-between items-center mb-12">
+        <h1 className="text-2xl font-bold tracking-tighter text-red-600">UNICORN OS</h1>
+        <div className="text-sm text-gray-400">User: cmwrxh | Host: Charles-Mwaura</div>
+      </header>
 
-      {/* Main Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-        {/* PayPal/Wise Liquidity Card */}
-        <div className="bg-neutral-900/20 border border-neutral-800 p-8 rounded-3xl hover:border-blue-500/50 transition-all group relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
-            <CreditCard size={80} />
-          </div>
-          <div className="flex items-center gap-2 text-neutral-500 text-xs font-medium uppercase tracking-widest mb-4">
-            <Wallet size={14} className="text-blue-500" />
-            Total Liquidity (PayPal • Wise)
-          </div>
-          <p className="text-5xl font-bold tracking-tighter">$7,240.00</p>
-          <div className="mt-6 flex items-center gap-2">
-            <span className="text-green-500 text-sm font-bold">+12.5%</span>
-            <span className="text-neutral-600 text-xs font-medium">Growth this cycle</span>
-          </div>
-        </div>
-
-        {/* Global Latency Card */}
-        <div className="bg-neutral-900/20 border border-neutral-800 p-8 rounded-3xl hover:border-blue-500/50 transition-all group">
-          <div className="flex items-center gap-2 text-neutral-500 text-xs font-medium uppercase tracking-widest mb-4">
-            <Globe size={14} className="text-blue-500" />
-            Global Edge Network
-          </div>
-          <p className="text-5xl font-bold tracking-tighter">14<span className="text-2xl text-neutral-600">ms</span></p>
-          <div className="mt-6 flex items-center gap-2 text-neutral-400 text-xs">
-            <div className="flex -space-x-2">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="w-6 h-6 rounded-full border-2 border-black bg-neutral-800" />
-              ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {/* PAYPAL CARD */}
+        <div className="bg-zinc-900 border border-blue-500/30 p-6 rounded-2xl hover:bg-zinc-800 transition-all">
+          <div className="flex justify-between items-start mb-4">
+            <div className="p-3 bg-blue-600/10 rounded-lg">
+              <Wallet className="text-blue-500" size={24} />
             </div>
-            12 Nodes Active
+            <span className="text-xs font-bold text-blue-500 bg-blue-500/10 px-2 py-1 rounded">PAYPAL PRIMARY</span>
+          </div>
+          <p className="text-gray-400 text-sm">Available Balance</p>
+          <h2 className="text-4xl font-mono mt-1">${paypalBalance.toLocaleString(undefined, {minimumFractionDigits: 2})}</h2>
+          <div className="mt-4 flex gap-2">
+            <button className="text-xs bg-blue-600 px-3 py-1 rounded-full font-bold">Transfer</button>
           </div>
         </div>
+
+        {/* WISE CARD */}
+        <div className="bg-zinc-900 border border-green-500/30 p-6 rounded-2xl hover:bg-zinc-800 transition-all">
+          <div className="flex justify-between items-start mb-4">
+            <div className="p-3 bg-green-600/10 rounded-lg">
+              <Globe className="text-green-500" size={24} />
+            </div>
+            <span className="text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded">WISE MULTI-CURRENCY</span>
+          </div>
+          <p className="text-gray-400 text-sm">Total Holdings (USD)</p>
+          <h2 className="text-4xl font-mono mt-1">${wiseBalance.toLocaleString(undefined, {minimumFractionDigits: 2})}</h2>
+          <div className="mt-4 flex gap-2">
+            <button className="text-xs bg-green-600 px-3 py-1 rounded-full font-bold text-black">Exchange</button>
+          </div>
+        </div>
+
       </div>
-    </main>
+
+      {/* DEADPOOL QUICK ACTION */}
+      <div className="mt-12 p-6 bg-red-600/5 border border-red-600/20 rounded-2xl flex items-center justify-between">
+        <div>
+          <h3 className="text-red-500 font-bold">System Status: Maximum Effort</h3>
+          <p className="text-gray-500 text-xs">All encrypted channels active.</p>
+        </div>
+        <Plus className="text-red-600 cursor-pointer hover:rotate-90 transition-transform" />
+      </div>
+    </div>
   );
 }
